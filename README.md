@@ -1,6 +1,5 @@
 # Video Generation Models as World Simulators (Sora)
 
-<hr>
 
 Presenter: Kunyang Ji
 
