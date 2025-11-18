@@ -1,6 +1,7 @@
 # Topic: Video Generation Models as World Simulators (Sora)
 
 presenter: Kunyang Ji
+
 present date: 2025.11.17
 
 # 1. Overview:
