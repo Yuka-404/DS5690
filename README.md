@@ -154,6 +154,9 @@ Sora is a closed-source, unreleased model. No code, API, or model weights are pu
 
 - **Architecture Unification:** This report, building on the DiT paper, will likely be the final nail in the coffin for U-Nets as the de facto backbone for large-scale generative models. It proves that the Transformer, which already dominates NLP and is rising in vision, is the most scalable architecture for generation, too. We will likely see a massive research shift away from U-Net models (like Imagen Video) and toward Transformer-based ones (like W.A.L.T and Sora).
 
+![Application of Sora](./images/p3.png)
+
+
 # 6. Questions:
 **Question 1:** One of Sora's most-touted features is its ability to generate video in any aspect ratio (e.g., 16:9, 1:1, 9:16) with a single model. Google's Imagen Video, its U-Net-based rival, cannot do this and is locked into a fixed resolution pipeline.
 
