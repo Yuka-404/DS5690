@@ -9,8 +9,7 @@ Date: 2025.11.17
 
 **Context:**
 
-For the past few years, generative AI has mastered text (like GPT) and images (like DALL-E). The natural next frontier has been high-fidelity video. This has proven incredibly difficult due to the core challenge of temporal consistency—making sure objects and people stay coherent and obey the laws of physics over time.
-
+For the past few years, generative AI has mastered text (like GPT) and images (like DALL-E). The natural next frontier has been high-fidelity video. This has demonstrated significant difficulty due to the fundamental obstacle of temporal consistency—ensuring that objects and individuals remain coherent and adhere to the laws of physics over time.
 
 **The Problem:**
 
