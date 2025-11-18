@@ -152,7 +152,7 @@ Sora is a closed-source, unreleased model. No code, API, or model weights are pu
 
 - **Shift in Paradigm:** From Video Generator to World Simulator. This is the biggest impact. The authors are explicitly stating that the goal is no longer just "making movies." The goal is to build general-purpose simulators of the physical world. This reframes the entire problem.
 
-- **Architecture Unification:** This report, building on the DiT paper, will likely be the final nail in the coffin for U-Nets as the de facto backbone for large-scale generative models. It proves that the Transformer, which already dominates NLP and is rising in vision, is the most scalable architecture for generation, too. We will likely see a massive research shift away from U-Net models (like Imagen Video) and toward Transformer-based ones (like W.A.L.T and Sora).
+- **Architecture Unification:** The report will likely signify the definitive end of U-Nets as the predominant framework for large-scale generative models.  It proves that the Transformer, which already dominates NLP and is rising in vision, is the most scalable architecture for generation, too. We will likely see a massive research shift away from U-Net models (like Imagen Video) and toward Transformer-based ones (like W.A.L.T and Sora).
 
 ![Application of Sora](./images/p3.png)
 
