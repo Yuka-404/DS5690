@@ -139,25 +139,8 @@ The following table highlights how Sora's "Patches + Transformer" design offers 
 | **Model Structure** | **Complex Cascaded U-Net (e.g., Imagen Video)**<br>Relies on a rigid pipeline of up to 7 distinct models that progressively upscale video (Base $\rightarrow$ Spatial SR $\rightarrow$ Temporal SR). | **Single Unified Transformer**<br>Uses a single model. It processes video as a grid of patches, allowing it to generate any resolution or aspect ratio without a fixed pipeline. | **flexibility & Simplicity**<br>Not locked into specific resolutions; handles diverse visual data naturally. |
 | **Attention Mechanism** | **Windowed/Local Attention (e.g., W.A.L.T)**<br>Restricts attention so patches only look at their immediate neighbors. Done primarily for computational efficiency. | **Full, Long-Range Attention**<br>Allows every single patch in the video (space and time) to directly "see" and communicate with every other patch in a single step. | **Global Coherence**<br>Maintains consistency across the entire video duration because the model understands the full context at once. |
 
+# 3. Questions
 
-# 3. Critical Analysis:
-- **Fails at Basic Physics & Logic:** The authors are candid that Sora is not a perfect simulator. It "does not accurately model the physics of many basic interactions, like glass shattering." It struggles with cause-and-effect. This shows the "simulation" is still a very good statistical approximation, not a true physics engine.
-
-- **No Benchmarking:** This is the biggest scientific critique. The Sora report is purely qualitative. It provides cherry-picked videos but no quantitative, head-to-head comparison on standard video benchmarks (like FVD on UCF-101). In contrast, the Imagen Video and W.A.L.T papers do provide these metrics. This makes Sora's "state-of-the-art" status unverifiable.
-
-# 4. Code Demonstration:
-Sora is a closed-source, unreleased model. No code, API, or model weights are publicly available.
-
-# 5. Impacts:
-
-- **Shift in Paradigm:** From Video Generator to World Simulator. This is the biggest impact. The authors are explicitly stating that the goal is no longer just "making movies." The goal is to build general-purpose simulators of the physical world. This reframes the entire problem.
-
-- **Architecture Unification:** The report will likely signify the definitive end of U-Nets as the predominant framework for large-scale generative models.  It proves that the Transformer, which already dominates NLP and is rising in vision, is the most scalable architecture for generation, too. We will likely see a massive research shift away from U-Net models (like Imagen Video) and toward Transformer-based ones (like W.A.L.T and Sora).
-
-![Application of Sora](./images/p3.png)
-
-
-# 6. Questions:
 **Question 1:** We've mentioned that older models (like Imagen Video) are rigid—they are often "locked" into creating videos of a specific size (like a square). In contrast, Sora can generate video in any aspect ratio (vertical phone screen, widescreen movie, etc.) naturally.
 
 Based on the "Spacetime Patch" architecture we discussed, why is Sora so much more flexible?
@@ -172,8 +155,6 @@ Sora (Patches): Sora treats video like a bag of LEGO bricks (patches). It doesn'
 
 </details>
 
-<hr>
-
 **Question 2:** A major failing of AI video is "forgetting" things—a person walks behind a tree and disappears, or a shirt changes color halfway through. Sora claims to be a "World Simulator" that solves this.
 
 Why is the Transformer architecture specifically better at maintaining this "Object Permanence" compared to competitors that use "Windowed Attention"?
@@ -187,6 +168,21 @@ Why is the Transformer architecture specifically better at maintaining this "Obj
 
 </details>
 
+# 4. Critical Analysis:
+- **Fails at Basic Physics & Logic:** The authors are candid that Sora is not a perfect simulator. It "does not accurately model the physics of many basic interactions, like glass shattering." It struggles with cause-and-effect. This shows the "simulation" is still a very good statistical approximation, not a true physics engine.
+
+- **No Benchmarking:** This is the biggest scientific critique. The Sora report is purely qualitative. It provides cherry-picked videos but no quantitative, head-to-head comparison on standard video benchmarks (like FVD on UCF-101). In contrast, the Imagen Video and W.A.L.T papers do provide these metrics. This makes Sora's "state-of-the-art" status unverifiable.
+
+# 5. Code Demonstration:
+Sora is a closed-source, unreleased model. No code, API, or model weights are publicly available.
+
+# 6. Impacts:
+
+- **Shift in Paradigm:** From Video Generator to World Simulator. This is the biggest impact. The authors are explicitly stating that the goal is no longer just "making movies." The goal is to build general-purpose simulators of the physical world. This reframes the entire problem.
+
+- **Architecture Unification:** The report will likely signify the definitive end of U-Nets as the predominant framework for large-scale generative models.  It proves that the Transformer, which already dominates NLP and is rising in vision, is the most scalable architecture for generation, too. We will likely see a massive research shift away from U-Net models (like Imagen Video) and toward Transformer-based ones (like W.A.L.T and Sora).
+
+![Application of Sora](./images/p3.png)
 
 # 7. Conclusion: 
 Sora redefines generative AI by proving that a unified Transformer architecture is superior to complex U-Net pipelines, validating the investment in full-attention mechanisms over localized efficiency. This shift sets a definitive course for future research, prioritizing scalable, unified models as the new standard.
