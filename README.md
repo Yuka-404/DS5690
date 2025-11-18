@@ -58,20 +58,85 @@ The core innovation is adapting this DiT for video by introducing "spacetime pat
 
 A key detail, confirmed in the DiT paper, is the conditioning method. Sora likely uses adaLN-Zero (Adaptive Layer Norm). This is a highly efficient way to feed the model information like the timestep and text prompt by modulating the Transformer's normalization layers, rather than using more expensive cross-attention.
 
-**How Sora's Architecture Provides a Key Advantage:**
-This "patches + Transformer" design seems simple, but it gives Sora two massive advantages over its main competitors:
 
-**Advantage 1: A Single Unified Model:**
+**High-Level Training Pseudocode**
+```
+Function train_video_diffusion_model(videos, text_prompts):
+    
+    // 1. Get text and video 'patches'
+    // Sora's 'patches' are 3D blocks of spacetime (space + time)
+    text_embeddings = text_encoder.encode(text_prompts)
+    video_patches = patch_embedder.extract_patches(videos)
 
-- Competitor (Imagen Video): Relies on a complex cascaded U-Net. It's a rigid pipeline of 7 distinct models that progressively upscale the video (base, spatial-SR, temporal-SR).
+    // 2. Pick a random noise level (timestep) for each video
+    timesteps = random_integer(1, 1000) // 1000 is the total number of diffusion steps
 
-- Sora: Uses a single, unified Transformer model. It can generate video at any resolution or aspect ratio by simply arranging its patches in a different-sized grid. It's not locked into a fixed pipeline.
+    // 3. Add noise to the video patches based on the timestep
+    noisy_video_patches = diffusion_process.add_noise(video_patches, timesteps)
+    
+    // 4. Feed everything into the model (the Diffusion Transformer)
+    // The model's job is to PREDICT the noise that was added.
+    predicted_noise = diffusion_transformer_model(
+        input = noisy_video_patches,
+        timestep = timesteps,
+        context = text_embeddings
+    )
 
-**Advantage 2: Full, Long-Range Attention:**
+    // 5. Calculate how 'wrong' the model was
+    // We compare the noise the model PREDICTED with the noise we ACTUALLY added.
+    loss = mean_squared_error(predicted_noise, actual_noise)
+    
+    // 6. Update the model's weights to get better next time
+    optimizer.step(loss)
+    
+    repeat for many steps...
+```
 
-- Competitor (W.A.L.T): This is also a Diffusion Transformer, but for efficiency, it uses windowed (local) attention. Each patch only looks at its immediate neighbors.
 
-- Sora: Uses full attention (we assume), which is much more computationally expensive. This allows every single patch in the video to directly "see" and communicate with every other patch in a single step. This is likely the secret to Sora's incredible long-range coherence and consistency.
+**High-Level Inference (Generation) Pseudocode**
+```
+Function generate_video(prompt):
+
+    // 1. Get the text embedding for the prompt
+    text_embedding = text_encoder.encode(prompt)
+    
+    // 2. Start with pure random noise
+    // This noise has the shape of the final video 'patches' (e.g., 24 frames, 256 height, 256 width)
+    video_patches = create_random_noise_tensor(frames, height, width)
+
+    // 3. Loop from 1000 down to 1 (the 'denoising' loop)
+    For step from 1000 down to 1:
+        // Ask the model to predict the noise in the current video_patches
+        predicted_noise = diffusion_transformer_model(
+            input = video_patches,
+            timestep = step,
+            context = text_embedding
+        )
+        
+        // 4. 'Subtract' the predicted noise
+        // This is the core diffusion step, making the video slightly less noisy
+        video_patches = diffusion_process.denoise_one_step(
+            current_video = video_patches,
+            noise_prediction = predicted_noise,
+            current_timestep = step
+        )
+        
+    // 5. Once the loop is done, the noise is gone.
+    // Decode the final patches back into a viewable video.
+    final_video = patch_decoder.decode_patches_to_video(video_patches)
+    
+    return final_video
+```
+
+
+## Sora Architecture vs. Competitors
+
+The following table highlights how Sora's "Patches + Transformer" design offers distinct advantages over traditional video generation pipelines (like Imagen Video or W.A.L.T).
+
+| Comparison Point | Competitor Approach | Sora's Approach (DiT) | Key Advantage |
+| :--- | :--- | :--- | :--- |
+| **Model Structure** | **Complex Cascaded U-Net (e.g., Imagen Video)**<br>Relies on a rigid pipeline of up to 7 distinct models that progressively upscale video (Base $\rightarrow$ Spatial SR $\rightarrow$ Temporal SR). | **Single Unified Transformer**<br>Uses a single model. It processes video as a grid of patches, allowing it to generate any resolution or aspect ratio without a fixed pipeline. | **flexibility & Simplicity**<br>Not locked into specific resolutions; handles diverse visual data naturally. |
+| **Attention Mechanism** | **Windowed/Local Attention (e.g., W.A.L.T)**<br>Restricts attention so patches only look at their immediate neighbors. Done primarily for computational efficiency. | **Full, Long-Range Attention**<br>Allows every single patch in the video (space and time) to directly "see" and communicate with every other patch in a single step. | **Global Coherence**<br>Maintains consistency across the entire video duration because the model understands the full context at once. |
 
 
 # 3. Critical Analysis:
@@ -95,7 +160,7 @@ Sora is a closed-source, unreleased model. No code, API, or model weights are pu
 What is the fundamental architectural difference that prevents the Imagen Video U-Net cascade from doing this, and why does Sora's patch-based Transformer handle it natively?
 
 <details>
-<summary><b>Click for Answer</b></summary>
+<summary><b>Answer</b></summary>
 
 Imagen Video's Limitation (Rigid U-Net Cascade): The U-Net's core design is based on convolutional "downsampling" and "upsampling" blocks. This architecture has a strong inductive bias for 2D spatial hierarchies and assumes a fixed input resolution (e.g., 64x64). Imagen Video hard-codes this, using a cascade of 7 different U-Nets, each trained for a specific, fixed resolution (e.g., a 240p model, then a 480p model, then a 720p model). This pipeline is fundamentally rigid; it cannot handle a 1:1 or 9:16 input.
 
@@ -110,7 +175,7 @@ Sora's Advantage (Agnostic Transformer): A Transformer, as used in Sora, is "res
 What is the computational vs. modeling trade-off here? And why is Sora's (more expensive) full-attention approach essential to its claim as a 'world simulator'?
 
 <details>
-<summary><b>Click for Answer</b></summary>
+<summary><b>Answer</b></summary>
 
 The Trade-off: The trade-off is Compute vs. Receptive Field.
 
