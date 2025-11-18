@@ -158,35 +158,32 @@ Sora is a closed-source, unreleased model. No code, API, or model weights are pu
 
 
 # 6. Questions:
-**Question 1:** One of Sora's most-touted features is its ability to generate video in any aspect ratio (e.g., 16:9, 1:1, 9:16) with a single model. Google's Imagen Video, its U-Net-based rival, cannot do this and is locked into a fixed resolution pipeline.
+**Question 1:** We've mentioned that older models (like Imagen Video) are rigid—they are often "locked" into creating videos of a specific size (like a square). In contrast, Sora can generate video in any aspect ratio (vertical phone screen, widescreen movie, etc.) naturally.
 
-What is the fundamental architectural difference that prevents the Imagen Video U-Net cascade from doing this, and why does Sora's patch-based Transformer handle it natively?
-
+Based on the "Spacetime Patch" architecture we discussed, why is Sora so much more flexible?
 <details>
 <summary><b>Answer</b></summary>
 
-Imagen Video's Limitation (Rigid U-Net Cascade): The U-Net's core design is based on convolutional "downsampling" and "upsampling" blocks. This architecture has a strong inductive bias for 2D spatial hierarchies and assumes a fixed input resolution (e.g., 64x64). Imagen Video hard-codes this, using a cascade of 7 different U-Nets, each trained for a specific, fixed resolution (e.g., a 240p model, then a 480p model, then a 720p model). This pipeline is fundamentally rigid; it cannot handle a 1:1 or 9:16 input.
+Think of it like Cookie Cutters vs. LEGO Bricks.
 
-Sora's Advantage (Agnostic Transformer): A Transformer, as used in Sora, is "resolution-agnostic." It doesn't see a "2D image"; it just sees a 1D sequence of tokens (patches). It doesn't care if that sequence has 300 tokens (from a 1:1 video) or 500 tokens (from a 16:9 video). It learns a variable-length sequence problem, just like an LLM. This is what allows Sora to generate videos in any aspect ratio within a single model—it just processes a shorter or longer sequence of patches.
+Old Models (Cascaded U-Nets): They function like a cookie cutter. The model is built to process a specific "shape" of data (e.g., a 64x64 pixel square). If you try to feed it a wide rectangle, the "cutter" doesn't fit, and the model fails.
+
+Sora (Patches): Sora treats video like a bag of LEGO bricks (patches). It doesn't care about the shape of the final structure. It takes the video, cuts it up into small patches, and treats them as a simple list or sequence. Whether that list creates a tall tower (vertical video) or a long wall (widescreen video), the model processes the list exactly the same way.
 
 </details>
 
 <hr>
 
-**Question 2:** Sora's claim to be a "world simulator" seems to rely on its ability to model complex, long-range interactions (like object permanence). This is likely achieved with full attention, which is quadratically expensive (O(n^2)). A competitor like Google's W.A.L.T uses windowed attention (O(n)) to be far more efficient.
+**Question 2:** A major failing of AI video is "forgetting" things—a person walks behind a tree and disappears, or a shirt changes color halfway through. Sora claims to be a "World Simulator" that solves this.
 
-What is the computational vs. modeling trade-off here? And why is Sora's (more expensive) full-attention approach essential to its claim as a 'world simulator'?
+Why is the Transformer architecture specifically better at maintaining this "Object Permanence" compared to competitors that use "Windowed Attention"?
 
 <details>
 <summary><b>Answer</b></summary>
 
-The Trade-off: The trade-off is Compute vs. Receptive Field.
+- Competitors (Windowed Attention): To save money on computing power, models like W.A.L.T use "windowed" attention. A patch can only "see" its immediate neighbors. It has tunnel vision. If a ball is kicked in Frame 1 and lands in Frame 50, the model struggles to connect those two distant events because they aren't neighbors.
 
-W.A.L.T's windowed attention is much more efficient (scaling linearly with token count, not quadratically). This allows it to train and run on more accessible hardware. However, its modeling power is limited, as each patch can only "see" other patches in its immediate local window. Information must propagate slowly across many layers to become global.
-
-Sora's full-attention approach is quadratically expensive (if you double the video length, you 4x the compute). But, its modeling power is theoretically maximal. In a single layer, every patch can directly communicate with every other patch in space and time.
-
-Why it Matters for a "World Simulator": To be a "world simulator," a model must understand global physics and long-range cause-and-effect. For example, a ball kicked in frame 1 should land in frame 50, and the shadow on the wall should match the person's movement across the room. W.A.L.T's local windows would struggle with this, as the "kick" patch and "landing" patch are too far apart to communicate directly. Sora's full-attention mechanism is built for this. It allows the model to directly learn these long-range spatiotemporal relationships, which is essential for 3D consistency and object permanence. Sora is betting that this (very expensive) global attention is the only way to truly learn these "world rules."
+- Sora (Full Global Attention): Sora uses a Transformer with full attention. This means every single patch in the video (from the first second to the last second) can "look at" and communicate with every other patch simultaneously. The model can "see" the ball in Frame 1 and explicitly link it to Frame 50, ensuring the physics stay consistent across the entire timeline.
 
 </details>
 
