@@ -205,8 +205,9 @@ Sora redefines generative AI by proving that a unified Transformer architecture 
 - The Autoregressive Predecessor (VideoGPT): Yan, et al. (2021). VideoGPT: Video Generation using VQ-VAE and Transformers.\
   https://arxiv.org/abs/2104.10157
 
-- Historical Context (iGPT): Chen, et al. (2020). Generative Pretraining from Pixels.\
-  https://proceedings.mlr.press/v119/chen20s.html
+- Sora & Video Generation Context: Yixin, et al. (2024). ora: A Review on Background, Technology, Limitations, and
+Opportunities of Large Vision Models.\
+  https://arxiv.org/pdf/2402.17177
 
 # 9. Citation:
 Brooks, Tim, Bill Peebles, Connor Holmes, et al. "Video generation models as world simulators." OpenAI, 15 Feb 2024, https://openai.com/index/video-generation-models-as-world-simulators/.
