@@ -33,7 +33,7 @@ The hypothesis is that at a massive scale, a model forced to accurately predict 
 
 - Cause-and-effect
 
-![The Diffusion Transformer (DiT) architecture.](./images/p1.jpg)
+![Sora Image-to-Video Generation](images/p1.jpg)
 
 **How it was Addressed:**
 
@@ -57,6 +57,8 @@ The core innovation is adapting this DiT for video by introducing "spacetime pat
 - The DiT Backbone: This sequence of tokens is fed into a standard Transformer. The Transformer's job is to predict the clean version of these patches from a noisy input.
 
 A key detail, confirmed in the DiT paper, is the conditioning method. Sora likely uses adaLN-Zero (Adaptive Layer Norm). This is a highly efficient way to feed the model information like the timestep and text prompt by modulating the Transformer's normalization layers, rather than using more expensive cross-attention.
+
+![The Diffusion Transformer (DiT) architecture.](./images/p2.jpg)
 
 
 **High-Level Training Pseudocode**
@@ -140,10 +142,9 @@ The following table highlights how Sora's "Patches + Transformer" design offers 
 
 
 # 3. Critical Analysis:
-- **Fails at Basic Physics & Logic:** The authors are candid that Sora is not a perfect simulator. It "does not accurately model the physics of many basic interactions, like glass shattering." It struggles with cause-and-effect (e.g., a person eating a burger might not leave a bite mark).
+- **Fails at Basic Physics & Logic:** The authors are candid that Sora is not a perfect simulator. It "does not accurately model the physics of many basic interactions, like glass shattering." It struggles with cause-and-effect. This shows the "simulation" is still a very good statistical approximation, not a true physics engine.
 
-- **No Benchmarking:** This is the biggest scientific critique. The Sora report is purely qualitative. It provides cherry-picked videos but no quantitative, head-to-head comparison on standard video benchmarks (like FVD on UCF-101). In contrast, the Imagen Video and W.A.L.T papers do provide these metrics. This makes Sora's "state-of-the-art" status unverifiable and positions this as an (incredibly impressive) engineering demo, not a scientific paper.
-
+- **No Benchmarking:** This is the biggest scientific critique. The Sora report is purely qualitative. It provides cherry-picked videos but no quantitative, head-to-head comparison on standard video benchmarks (like FVD on UCF-101). In contrast, the Imagen Video and W.A.L.T papers do provide these metrics. This makes Sora's "state-of-the-art" status unverifiable.
 
 # 4. Code Demonstration:
 Sora is a closed-source, unreleased model. No code, API, or model weights are publicly available. Therefore, a live code demonstration is not possible.
