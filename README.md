@@ -146,7 +146,7 @@ The following table highlights how Sora's "Patches + Transformer" design offers 
 - **No Benchmarking:** This is the biggest scientific critique. The Sora report is purely qualitative. It provides cherry-picked videos but no quantitative, head-to-head comparison on standard video benchmarks (like FVD on UCF-101). In contrast, the Imagen Video and W.A.L.T papers do provide these metrics. This makes Sora's "state-of-the-art" status unverifiable.
 
 # 4. Code Demonstration:
-Sora is a closed-source, unreleased model. No code, API, or model weights are publicly available. Therefore, a live code demonstration is not possible.
+Sora is a closed-source, unreleased model. No code, API, or model weights are publicly available.
 
 # 5. Impacts:
 
