@@ -13,7 +13,7 @@ For the past few years, generative AI has mastered text (like GPT) and images (l
 
 **The Problem:**
 
-How do you build a single, scalable model that can generate high-fidelity video of any duration, any aspect ratio, and any resolution? Existing approaches failed to meet all these criteria:
+How to build a single, scalable model that can generate high-fidelity video of any duration, any aspect ratio, and any resolution? Existing approaches failed to meet all these criteria:
 
 - Cascaded U-Nets (like Google's Imagen Video): Powerful, but extremely complex. They require a rigid pipeline of 7 or more separate models and are locked into fixed resolutions.
 
