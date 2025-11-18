@@ -33,6 +33,7 @@ The hypothesis is that at a massive scale, a model forced to accurately predict 
 
 - Cause-and-effect
 
+![The Diffusion Transformer (DiT) architecture.](./images/p1.jpg)
 
 **How it was Addressed:**
 
