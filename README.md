@@ -103,6 +103,8 @@ Sora's Advantage (Agnostic Transformer): A Transformer, as used in Sora, is "res
 
 </details>
 
+<hr>
+
 **Question 2:** Sora's claim to be a "world simulator" seems to rely on its ability to model complex, long-range interactions (like object permanence). This is likely achieved with full attention, which is quadratically expensive (O(n^2)). A competitor like Google's W.A.L.T uses windowed attention (O(n)) to be far more efficient.
 
 What is the computational vs. modeling trade-off here? And why is Sora's (more expensive) full-attention approach essential to its claim as a 'world simulator'?
