@@ -33,7 +33,7 @@ The hypothesis is that at a massive scale, a model forced to accurately predict 
 
 - Cause-and-effect
 
-![Sora Image-to-Video Generation](images/p1.jpg)
+![Sora Image-to-Video Generation](images/p1.png)
 
 **How it was Addressed:**
 
@@ -58,7 +58,7 @@ The core innovation is adapting this DiT for video by introducing "spacetime pat
 
 A key detail, confirmed in the DiT paper, is the conditioning method. Sora likely uses adaLN-Zero (Adaptive Layer Norm). This is a highly efficient way to feed the model information like the timestep and text prompt by modulating the Transformer's normalization layers, rather than using more expensive cross-attention.
 
-![The Diffusion Transformer (DiT) architecture.](./images/p2.jpg)
+![The Diffusion Transformer (DiT) architecture.](./images/p2.png)
 
 
 **High-Level Training Pseudocode**
